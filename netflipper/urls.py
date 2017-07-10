@@ -66,7 +66,7 @@ urlpatterns = [
     url(r'^create_from_id/$', views.create_from_id, name='create_from_id'),
     url(r'^create_movie/$', views.create_movie, name='create_movie'),
     url(r'^create_channel/$', views.create_channel, name='create_channel'),
-    url(r'^(?P<series_id>[0-9]+)/(?P<season_id>[0-9]+)/$',
+    url(r'^view_season/(?P<series_id>[0-9]+)/(?P<season_id>[0-9]+)/$',
         views.view_season, name='view_season'),
     url(r'^select_show_name/(?P<series_id>[0-9]+)/$',
         views.select_show_name, name='select_show_name'),
@@ -79,4 +79,4 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-] 
+]
