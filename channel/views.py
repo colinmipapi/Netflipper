@@ -248,34 +248,36 @@ def view_season(request, series_id,season_id):
     series = Series.objects.get(pk=series_id)
     episodes = Video.objects.filter(season_id=season.id)
 
-    channels = Channel.objects.filter(user=request.user)
+    if request.user.is_authenticated :
 
-    if request.method == 'POST':
+        channels = Channel.objects.filter(user=request.user)
 
-        channel = request.POST.get('channel_name','')
-        channel_info = Channel.objects.get(pk=channel)
+        if request.method == 'POST':
 
-        season_add = request.POST.get('season_add','')
+            channel = request.POST.get('channel_name','')
+            channel_info = Channel.objects.get(pk=channel)
 
-        if season_add == 'add':
+            season_add = request.POST.get('season_add','')
 
-            for episode in episodes :
+            if season_add == 'add':
 
-                ep = episode.id
+                for episode in episodes :
+
+                    ep = episode.id
+
+                    ep_obj = Video.objects.get(pk=ep)
+
+                    channel_info.content.add(ep_obj)
+
+            episode_checked = request.POST.getlist('checks[]')
+
+            for ep in episode_checked:
 
                 ep_obj = Video.objects.get(pk=ep)
 
                 channel_info.content.add(ep_obj)
 
-        episode_checked = request.POST.getlist('checks[]')
-
-        for ep in episode_checked:
-
-            ep_obj = Video.objects.get(pk=ep)
-
-            channel_info.content.add(ep_obj)
-
-        channel_info.save()
+            channel_info.save()
 
 
     return render(request, 'season/view_season.html',{
