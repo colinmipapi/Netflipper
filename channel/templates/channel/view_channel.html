@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Channel</h1>
+<h2>{{ channel.name }}</h2>
+<ol>
+{% for episode in channel.content.all %}
+  <li>
+    {{ episode.name }} </br>
+    {{ episode.season.series.name }} |
+    {{ episode.season.name }}
+  </li>
+  </br>
+{% endfor %}
+</ol>
+{% endblock content %}

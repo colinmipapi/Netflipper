@@ -1,0 +1,9 @@
+<form role="form" action="/create_movie/" method="post">
+  {% csrf_token %}
+  Search: <input type='text' name='movie_add_value'/></br>
+  by <select type='text' name='movie_search_by'>
+    <option value='movie_name'>Name</option>
+    <option value='movie_id'>ID</option>
+  </select>
+  <input type="submit" value"Submit"/></br>
+</form>

@@ -1,0 +1,8 @@
+<form role="form" action="" method="post">
+  {% csrf_token %}
+  Name: <select type='text' name='ep_select'/></br>
+  {% for option in results %}
+    <option value="{{ option }}">{{option}}</option>
+  {% endfor %}
+  <input type="submit" value"Submit"/></br>
+</form>

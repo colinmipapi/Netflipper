@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{series.name}}</h1>
+  <ul>
+  {% for season in series.season_set.all %}
+    <li>{{season.name}}</li>
+  {% endfor %}
+  </ul>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    <h2>Add Channel</h2>
+    {% include 'forms/create_channel.html' %}
+    <ul>
+    {% for channel in user.channel_set.all %}
+      <li>{{ channel.name }} <a href="{% url 'view_channel' channel_id=channel.id %}">view</a></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  <h2>All Movies</h2>
+  <ol>
+  {% for movie in movies %}
+    <li>{{movie.name}}</li>
+  {% endfor %}
+  </ol>
+  <h2>All Series</h2>
+  <ol>
+  {% for series in seriess %}
+    <li>{{ series.name }}</li>
+    <ul>
+    {% for season in series.season_set.all %}
+      {% if season.video_set.all %}
+        <a href="{% url 'view_season' series_id=series.id season_id=season.id %}">
+          <li>{{season.name}}</li>
+        </a>
+      {% endif %}
+    {% endfor %}
+    </ul>
+  {% endfor %}
+  </ol>
+  <h2>Add Movie</h2>
+  {% include 'forms/create_movie.html' %}
+  <h2>Add Series</h2>
+  <h3>By Name</h3>
+  {% include 'forms/create_series.html' %}
+  <h3>By ID</h3>
+  {% include 'forms/create_from_id.html' %}
+
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form role="form" action="" method="post">
+  <h1>{{series.name}}</h1>
+  <h2>{{season.name}}</h2>
+  <h3>Add All Episodes</h3>
+
+  {% csrf_token %}
+  <table>
+    <th>Episodes</th>
+    <tr>
+      <td>Number</td>
+      <td>Title</td>
+      <td>Year</td>
+      <td>Runtime</td>
+      <td>Add All <input name='season_add' type="checkbox" value='add'/></td>
+    </tr>
+    {% for episode in season.video_set.all %}
+      <tr>
+        <td>{{episode.episodeNum}}</td>
+        <td>{{episode.name}}</td>
+        <td>{{episode.year}}</td>
+        <td>{{episode.runtime}}</td>
+        <td><input name="checks[]" type="checkbox" value="{{episode.id}}"></input>
+      </tr>
+    {% endfor %}
+  </table>
+    Name: <select type='text' name='channel_name'/></br>
+    {% for channel in channels %}
+      <option value="{{ channel.id }}">{{channel.name}}</option>
+    {% endfor %}
+    <input type="submit" value="Save"></input>
+  </form>
+{% endblock content %}
