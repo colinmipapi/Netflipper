@@ -279,6 +279,10 @@ def view_season(request, series_id,season_id):
 
             channel_info.save()
 
+        else:
+
+            channels = None 
+
 
     return render(request, 'season/view_season.html',{
         'series' : series,
