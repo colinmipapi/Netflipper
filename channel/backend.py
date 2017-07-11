@@ -3,6 +3,7 @@ import wikipedia
 from bs4 import BeautifulSoup
 import urllib3
 import re
+import codecs
 
 from channel.models import Season, Series, Video, Channel
 
@@ -117,8 +118,6 @@ def get_episode_list(url, season_list):
 
 def get_netflix_show_data(show_id):
 
-    info_list = []
-
     url = "https://www.netflix.com/title/%s" % (show_id)
 
     http = urllib3.PoolManager()
@@ -127,35 +126,10 @@ def get_netflix_show_data(show_id):
 
     soup = BeautifulSoup(response.data,"html.parser")
 
-    title = soup.find("h1",class_='show-title')
+    title = soup.find('h1',class_="show-title").text
+    descrip = soup.find('p',class_="synopsis").text
 
-    info_list.append(title.text)
-
-    season_select = soup.find('span', class_='duration')
-
-    seas_text = season_select.text[0]
-
-    info_list.append(seas_text)
-
-    print(info_list)
-
-    return info_list
-
-def create_seasons(series, num_of_seasons):
-
-    season_counter = int(num_of_seasons)
-    counter = 1
-
-    while counter <= season_counter:
-
-        name = "Season %s" % (counter)
-        season_num = counter
-
-        season = Season(name=name, series=series, season_number=season_num)
-
-        season.save()
-
-        counter += 1
+    return [title,descrip]
 
 def get_netflix_episodes(show_id):
 
@@ -182,76 +156,9 @@ def get_netflix_episodes(show_id):
 
             i = 0
 
-
-
-
             for match in regex.finditer(script_text):
 
                 match_item = match.group()
-
-                try:
-                    patt = r"\\x20"
-                    match_item = re.sub(patt , ' ',match_item)
-
-                except:
-
-                    print ("could not remove x20")
-
-                try:
-                    patt = r"\\x27"
-                    match_item = re.sub(patt , "'",match_item)
-
-                except:
-
-                    print ("could not remove x27")
-
-                try:
-                    patt = r"\\x3B"
-                    match_item = re.sub(patt , "",match_item)
-
-                except:
-
-                    print ("could not remove x3B")
-
-                try:
-                    patt = r"\\x26"
-                    match_item = re.sub(patt , "and",match_item)
-
-                except:
-
-                    print ("could not remove x26")
-
-                try:
-                    patt = r"\\x3F"
-                    match_item = re.sub(patt , "?",match_item)
-
-                except:
-
-                    print ("could not remove x3F")
-
-                try:
-                    patt = r"\\x28"
-                    match_item = re.sub(patt , "(",match_item)
-
-                except:
-
-                    print ("could not remove x3")
-
-                try:
-                    patt = r"\\x29"
-                    match_item = re.sub(patt , ")",match_item)
-
-                except:
-
-                    print ("could not remove x29")
-
-                try:
-                    patt = r"\\"
-                    match_item = re.sub(patt , "",match_item)
-
-                except:
-
-                    print ("could not remove backslash")
                 patt2 = r',"artwork"'
                 match_clean2 = re.sub(patt2 , '}',match_item)
 
@@ -263,18 +170,26 @@ def get_netflix_episodes(show_id):
 
                     i+= 1
 
-                raw_text_list.append(match_clean2)
+                clean_text = codecs.getdecoder("unicode_escape")(match_clean2)[0]
+
+                raw_text_list.append(clean_text)
 
     return raw_text_list
 
 def get_netflix_ep_data(json_item):
 
+
     j = json.loads(json_item)
 
-    title = j['title']
-    season_num = j['seasonInfo']['num']
+    episodeTitle = j['title']
     episodeNum = j['episodeNum']
     episodeId = j['episodeId']
+    episodeDescription = j['synopsis']
+    seasonName = j['seasonInfo']['seasonName']
+    seasonNum = j['seasonInfo']['num']
+    seasonId = j['seasonInfo']['seasonId']
+    seasonDescription = j['seasonInfo']['synopsis']
+
     try:
         year = j['year']
     except:
@@ -284,4 +199,4 @@ def get_netflix_ep_data(json_item):
     except:
         runtime = None
 
-    return [season_num, episodeNum,title,episodeId,year,runtime]
+    return [episodeTitle, episodeId, episodeNum, episodeDescription, year, runtime, seasonName, seasonNum, seasonId, seasonDescription]

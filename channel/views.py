@@ -32,7 +32,6 @@ def create_channel(request):
 
     return render(request, 'forms/create_channel.html')
 
-
 def view_channel(request, channel_id):
 
     channel = Channel.objects.get(pk=channel_id)
@@ -41,189 +40,78 @@ def view_channel(request, channel_id):
         'channel' : channel,
     })
 
-def create_from_id(request):
-
-    if request.method == 'POST':
-
-        show_id = request.POST.get('show_id','')
-
-        try:
-
-            show_info = get_netflix_show_data(str(show_id))
-            title = show_info[0]
-            num_of_seasons = show_info[1]
-            series = Series(name=title,netflix_id=show_id,seasons_total=num_of_seasons)
-            series.save()
-
-        except:
-
-            print('could not find show by that id')
-            return redirect('home')
-
-        create_seasons(series, num_of_seasons)
-
-
-        ep_json = get_netflix_episodes(str(show_id))
-
-        for episode in ep_json:
-
-            try:
-                ep = get_netflix_ep_data(episode)
-
-                name = ep[2]
-                episodeNum = int(ep[1])
-                season_num = ep[0]
-                netflixID = ep[3]
-                year = ep[4]
-                runtime = int(ep[5])
-                ep_season = Season.objects.get(series=series, season_number=season_num)
-
-                episode = Video(name=name,
-                    episodeNum=episodeNum,
-                    season=ep_season,
-                    media_type="T",
-                    netflix_id=netflixID,
-                    year=year,
-                    runtime=runtime)
-
-                episode.save()
-
-            except:
-
-                print (episode)
-
-        return redirect('home')
-
-
-    return (request, 'forms/create_from_id.html')
-
-
 def create_series(request):
 
     if request.method == 'POST':
 
-        name = request.POST.get('series_name','')
+        value = request.POST.get('series_add_value','')
+        search_type = request.POST.get('series_search_by')
 
-        try:
+        if search_type == 'series_name':
 
-            showData = get_all_data(name)
-            netflixId = showData['show_id']
-            series = Series(name=name, netflix_id=netflixId)
-            series.save()
+            try:
 
-        except:
-
-            showData = None
-            print ("Could not find Netflix ID")
-            return redirect('home')
-
-
-        wiki_search = 'List of %s episodes' % (series.name)
-
-        wiki_raw_results = json.dumps(wikipedia.search(wiki_search))
-
-        wiki_results = json.loads(wiki_raw_results)
-
-
-        for result in wiki_results:
-
-            if result == wiki_search:
-
-                wiki_url = wikipedia.page(result).url
-
-                series.wikipedia_url = wiki_url
-
+                showData = get_all_data(str(value))
+                print (showData)
+                show_id = showData['show_id']
+                summary = showData['summary']
+                series = Series(name=value, netflix_id=show_id,description=summary)
                 series.save()
 
-                span_list= get_season_list(wiki_url)
+            except:
 
-                for item in span_list:
+                print ("Could not find Netflix ID by Name")
+                return redirect('home')
 
-                    name = 'Season ' + str(item[0])
+        elif search_type == 'series_id':
 
-                    season = Season(name=name, series=series, season_number=item[0])
+            try:
 
-                    season.save()
-
-                series.seasons_total = len(span_list)
-
+                show_info = get_netflix_show_data(str(value))
+                title = show_info[0]
+                summary = show_info[1]
+                show_id = value
+                series = Series(name=title,netflix_id=show_id)
                 series.save()
 
-                return redirect('find_add_episodes', series_id=series.id)
+            except:
 
-        return redirect('select_show_name',series_id=series.id)
+                print ("Could not find Netflix ID by ID")
+                return redirect('home')
 
-    return render(request, 'forms/create_series.html')
+        ep_json = get_netflix_episodes(show_id)
 
+        for episode in ep_json:
 
-def select_show_name(request,series_id):
-
-    series = Series.objects.get(pk=series_id)
-
-    in_put = 'List of %s' % (series.name)
-
-    results = wikipedia.search(in_put)
-
-    if request.method == 'POST':
-
-        name = request.POST.get('ep_select','')
-
-        wiki_page = wikipedia.page(name)
-
-        wiki_url = wiki_page.url
-
-        series.wikipedia_url = wiki_url
-
-        series.save()
-
-        span_list= get_season_list(wiki_url)
-
-        for item in span_list:
-
-            name = 'Season ' + str(item[0])
-
-            season = Season(name=name, series=series, season_number=item[0])
-
-            season.save()
-
-        series.seasons_total = len(span_list)
-
-
-        return redirect('find_add_episodes',series_id=series.id)
-
-    else:
-
-        return render(request, 'forms/select_show_name.html', {
-        'results': results,
-        })
-
-
-def find_add_episodes(request, series_id):
-
-    try:
-
-        series = Series.objects.get(pk=series_id)
-
-        ep_json_list = get_netflix_episodes(series.netflix_id)
-
-        for episode in ep_json_list:
-
+            #[episodeTitle, episodeId, episodeNum, episodeDescription, year, runtime, seasonName, seasonNum, seasonId, seasonDescription]
             try:
                 ep = get_netflix_ep_data(episode)
 
-                name = ep[2]
-                episodeNum = int(ep[1])
-                season_num = ep[0]
-                netflixID = ep[3]
+                episodeTitle = ep[0]
+                episodeId = ep[1]
+                episodeNum = int(ep[2])
+                episodeDescription = ep[3]
                 year = ep[4]
                 runtime = int(ep[5])
-                ep_season = Season.objects.get(series=series, season_number=season_num)
+                seasonName = ep[6]
+                seasonNum = ep[7]
+                seasonId = ep[8]
+                seasonDescription = ep[9]
 
-                episode = Video(name=name,
+                try:
+                    ep_season = Season.objects.get(series=series, name=seasonName, season_number=seasonNum, netflix_id=seasonId,description=seasonDescription)
+
+                except Season.DoesNotExist:
+
+                    ep_season = Season(series=series, name=seasonName, season_number=seasonNum, netflix_id=seasonId,description=seasonDescription)
+                    ep_season.save()
+
+                episode = Video(name=episodeTitle,
                     episodeNum=episodeNum,
                     season=ep_season,
                     media_type="T",
-                    netflix_id=netflixID,
+                    netflix_id=episodeId,
+                    description=episodeDescription,
                     year=year,
                     runtime=runtime)
 
@@ -231,16 +119,23 @@ def find_add_episodes(request, series_id):
 
             except:
 
-                print (episode)
+                print('could not find episode')
+
 
         return redirect('home')
 
-    except:
 
-        print('cound not add episodes')
+    return render(request, 'forms/create_series.html')
 
-    return render(request, 'index.html')
+def view_series(request, series_id):
 
+    series = Series.objects.get(pk=series_id)
+    channels = Channel.objects.all()
+
+
+    return render(request, 'series/view_series.html',{
+        'series' : series,
+    })
 
 def view_season(request, series_id,season_id):
 
@@ -281,24 +176,13 @@ def view_season(request, series_id,season_id):
 
     else:
 
-        channels = None 
+        channels = None
 
 
     return render(request, 'season/view_season.html',{
         'series' : series,
         'season' : season,
         'channels' : channels,
-    })
-
-
-def view_series(request, series_id):
-
-    series = Series.objects.get(pk=series_id)
-    channels = Channel.objects.all()
-
-
-    return render(request, 'series/view_series.html',{
-        'series' : series,
     })
 
 def create_movie(request):
@@ -346,7 +230,6 @@ def create_movie(request):
         return redirect('home')
 
     return render(request,'create_movie.html')
-
 
 def index(request):
     channels = Channel.objects.all()

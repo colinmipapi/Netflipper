@@ -2,7 +2,7 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-    <h2>Add Channel</h2>
+    <h2>Create Channel</h2>
     {% include 'forms/create_channel.html' %}
     <ul>
     {% for channel in user.channel_set.all %}
@@ -34,10 +34,7 @@
   <h2>Add Movie</h2>
   {% include 'forms/create_movie.html' %}
   <h2>Add Series</h2>
-  <h3>By Name</h3>
   {% include 'forms/create_series.html' %}
-  <h3>By ID</h3>
-  {% include 'forms/create_from_id.html' %}
 
 
 {% endblock content %}

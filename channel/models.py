@@ -22,6 +22,7 @@ class Series(models.Model):
     wikipedia_url = models.CharField(
         max_length=300,
         blank=True)
+    description = models.TextField(blank=True)
     seasons_total = models.IntegerField(null=True, blank=True)
     episodes_total = models.IntegerField(null=True, blank=True)
 
@@ -32,6 +33,10 @@ class Season(models.Model):
     name = models.CharField(max_length=20)
     series = models.ForeignKey('channel.Series')
     season_number = models.IntegerField(null=True, blank=True)
+    netflix_id = models.CharField(
+        max_length=20,
+        blank=True)
+    description = models.TextField(blank=True)
 
 
     def __str__(self):
@@ -63,6 +68,7 @@ class Video(models.Model):
     runtime = models.IntegerField(default=0,
         blank=True,
         null=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return '{}'.format(self.name)
