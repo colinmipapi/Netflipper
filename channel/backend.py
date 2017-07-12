@@ -170,14 +170,14 @@ def get_netflix_episodes(show_id):
 
                     i+= 1
 
-                clean_text = codecs.getdecoder("unicode_escape")(match_clean2)[0]
+                clean_text = json.dumps(codecs.decode(match_clean2,'unicode_escape'))
+
 
                 raw_text_list.append(clean_text)
 
     return raw_text_list
 
 def get_netflix_ep_data(json_item):
-
 
     j = json.loads(json_item)
 
@@ -199,4 +199,24 @@ def get_netflix_ep_data(json_item):
     except:
         runtime = None
 
-    return [episodeTitle, episodeId, episodeNum, episodeDescription, year, runtime, seasonName, seasonNum, seasonId, seasonDescription]
+    return [episodeTitle, episodeId, episodeNum, episodeDescription, seasonName, seasonNum, seasonId, seasonDescription, year, runtime]
+
+def get_id_from_name(search_term):
+    search_results = []
+    name = search_term
+    http = urllib3.PoolManager()
+    base_url = "https://www.google.com/#q="
+    name = name.replace(" ", "+")
+    url = base_url + name
+    print(url)
+    response = http.request('GET', url)
+    soup = BeautifulSoup(response.data,"html.parser")
+
+    for link in soup.find_all("a",string="netflix"):
+
+        try:
+            print(link)
+
+        except:
+
+            print('could not find data-href')

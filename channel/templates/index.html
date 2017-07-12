@@ -21,7 +21,7 @@
   {% for series in seriess %}
     <li>{{ series.name }}</li>
     <ul>
-    {% for season in series.season_set.all %}
+    {% for season in series.season_set.all|dictsort:"season_number" %}
       {% if season.video_set.all %}
         <a href="{% url 'view_season' series_id=series.id season_id=season.id %}">
           <li>{{season.name}}</li>

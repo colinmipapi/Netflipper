@@ -58,6 +58,8 @@ def create_series(request):
                 series = Series(name=value, netflix_id=show_id,description=summary)
                 series.save()
 
+
+
             except:
 
                 print ("Could not find Netflix ID by Name")
@@ -81,9 +83,11 @@ def create_series(request):
 
         ep_json = get_netflix_episodes(show_id)
 
+
         for episode in ep_json:
 
             #[episodeTitle, episodeId, episodeNum, episodeDescription, year, runtime, seasonName, seasonNum, seasonId, seasonDescription]
+
             try:
                 ep = get_netflix_ep_data(episode)
 
@@ -91,15 +95,15 @@ def create_series(request):
                 episodeId = ep[1]
                 episodeNum = int(ep[2])
                 episodeDescription = ep[3]
-                year = ep[4]
-                runtime = int(ep[5])
-                seasonName = ep[6]
-                seasonNum = ep[7]
-                seasonId = ep[8]
-                seasonDescription = ep[9]
+                year = ep[8]
+                runtime = int(ep[9])
+                seasonName = ep[4]
+                seasonNum = ep[5]
+                seasonId = ep[6]
+                seasonDescription = ep[7]
 
                 try:
-                    ep_season = Season.objects.get(series=series, name=seasonName, season_number=seasonNum, netflix_id=seasonId,description=seasonDescription)
+                    ep_season = Season.objects.get(series=series, season_number=seasonNum, netflix_id=seasonId)
 
                 except Season.DoesNotExist:
 
@@ -116,10 +120,8 @@ def create_series(request):
                     runtime=runtime)
 
                 episode.save()
-
             except:
-
-                print('could not find episode')
+                print('could not add episode')
 
 
         return redirect('home')
@@ -194,12 +196,14 @@ def create_movie(request):
 
         if search_type == 'movie_name':
 
+            get_id_from_name(str(value))
+
             try:
 
                 show_info = get_all_data(str(value))
                 netflixId = show_info['show_id']
-                movie = video(name=value, netflix_id=netflixId,media_type="M")
-                series.save()
+                movie = Video(name=value, netflix_id=netflixId,media_type="M")
+                movie.save()
 
                 print(show_info)
 
@@ -216,8 +220,9 @@ def create_movie(request):
                 show_info = get_netflix_show_data(str(value))
                 title = show_info[0]
                 show_id = str(value)
+                synopsis = show_info[1]
 
-                movie = Video(name=title,netflix_id=show_id,media_type="M")
+                movie = Video(name=title,netflix_id=show_id,media_type="M",description=synopsis)
 
                 movie.save()
 
@@ -229,7 +234,7 @@ def create_movie(request):
 
         return redirect('home')
 
-    return render(request,'create_movie.html')
+    return render(request,'forms/create_movie.html')
 
 def index(request):
     channels = Channel.objects.all()

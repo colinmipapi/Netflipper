@@ -10,13 +10,16 @@
   <table>
     <th>Episodes</th>
     <tr>
-      <td>Number</td>
+      <td>#</td>
       <td>Title</td>
       <td>Year</td>
       <td>Runtime</td>
-      <td>Add All <input name='season_add' type="checkbox" value='add'/></td>
+      <td>
+          Add All 
+          <input name='season_add' type="checkbox" value='add'/>
+      </td>
     </tr>
-    {% for episode in season.video_set.all %}
+    {% for episode in season.video_set.all|dictsort:"episodeNum" %}
       <tr>
         <td>{{episode.episodeNum}}</td>
         <td>{{episode.name}}</td>
