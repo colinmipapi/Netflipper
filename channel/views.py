@@ -239,7 +239,7 @@ def create_movie(request):
 def index(request):
     channels = Channel.objects.all()
     seriess = Series.objects.all().order_by('name')
-    movies = Video.objects.filter(media_type='M')
+    movies = Video.objects.filter(media_type='M').order_by('name')
     return render(request, 'index.html',{
         'channels' : channels,
         'seriess' : seriess,

@@ -12,10 +12,11 @@
     <tr>
       <td>#</td>
       <td>Title</td>
+      <td>Description</td>
       <td>Year</td>
-      <td>Runtime</td>
+      <td>Runtime (seconds)</td>
       <td>
-          Add All 
+          Add All
           <input name='season_add' type="checkbox" value='add'/>
       </td>
     </tr>
@@ -23,6 +24,7 @@
       <tr>
         <td>{{episode.episodeNum}}</td>
         <td>{{episode.name}}</td>
+        <td>{{episode.description}}</td>
         <td>{{episode.year}}</td>
         <td>{{episode.runtime}}</td>
         <td><input name="checks[]" type="checkbox" value="{{episode.id}}"></input>
