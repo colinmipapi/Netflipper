@@ -1,9 +1,15 @@
-<form role="form" action="/create_series/" method="post">
+<form role="form" class="form-inline" action="/create_series/" method="post">
   {% csrf_token %}
+  <div class="form-group">
   Search: <input type='text' name='series_add_value'/></br>
+</div>
+<div class="form-group">
   by <select type='text' name='series_search_by'>
     <option value='series_name'>Name</option>
     <option value='series_id'>ID</option>
   </select>
+</div>
+<div class="form-group">
   <input type="submit" value"Submit"/></br>
+</div>
 </form>

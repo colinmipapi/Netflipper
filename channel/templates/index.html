@@ -13,28 +13,40 @@
   <h2>All Movies</h2>
   <ol>
   {% for movie in movies %}
-    <li>{{movie.name}}</li>
+    <li class='index_title'>{{movie.name}}</li>
   {% endfor %}
   </ol>
   <h2>All Series</h2>
-  <ol>
+  <ol >
   {% for series in seriess %}
-    <li>{{ series.name }}</li>
-    <ul>
+  <div class="index_series_view">
+    <h2 class='index_title'>{{ series.name }}</h2>
+    <p>{{series.description}}</p>
+    <ul class="grid_view">
     {% for season in series.season_set.all|dictsort:"season_number" %}
       {% if season.video_set.all %}
+      <li>
         <a href="{% url 'view_season' series_id=series.id season_id=season.id %}">
-          <li>{{season.name}}</li>
+          <button type="button" class="btn btn-primary btn-lg">
+            {{season.name}}
+          </button>
         </a>
+      </li>
       {% endif %}
     {% endfor %}
-    </ul>
+  </ul>
+  </div>
   {% endfor %}
   </ol>
-  <h2>Add Movie</h2>
-  {% include 'forms/create_movie.html' %}
-  <h2>Add Series</h2>
-  {% include 'forms/create_series.html' %}
-
+  <div class="add-content-forms">
+    <div>
+      <h2>Add Movie</h2>
+      {% include 'forms/create_movie.html' %}
+    </div>
+    <div>
+      <h2>Add Series</h2>
+      {% include 'forms/create_series.html' %}
+    </div>
+  </div>
 
 {% endblock content %}

@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% load channels_extra %}
+<style>
+#table_info_row tr{
+    font-family: 'Roboto';font-size: 22px;
+}
+</style>
 {% block content %}
   <form role="form" action="" method="post">
   <h1>{{series.name}}</h1>
-  <h2>{{season.name}}</h2>
-  <h3>Add All Episodes</h3>
-
+  <h2 id ="season_name">{{season.name}}</h2>
   {% csrf_token %}
-  <table>
-    <th>Episodes</th>
-    <tr>
+  <table class="table table-hover" id="season_table">
+    <tr id="table_info_row">
       <td>#</td>
       <td>Title</td>
       <td>Description</td>
@@ -31,7 +33,7 @@
       </tr>
     {% endfor %}
   </table>
-    Name: <select type='text' name='channel_name'/></br>
+    Name: <select type='text' class="form-control" name='channel_name'/></br>
     {% for channel in channels %}
       <option value="{{ channel.id }}">{{channel.name}}</option>
     {% endfor %}

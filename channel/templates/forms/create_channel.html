@@ -1,5 +1,9 @@
-<form role="form" action="/create_channel/" method="post">
+<form role="form" class="form-inline" action="/create_channel/" method="post">
   {% csrf_token %}
-  Name: <input type='text' name='channel_name'/></br>
-  <input type="submit" value"Submit"/></br>
+  <div class="form-group">
+  Name: <input type='text' class="form-control" name='channel_name'/></br>
+</div>
+<div class="form-group">
+  <input type="submit" class="btn btn-default" value"Submit"/></br>
+</div>
 </form>
