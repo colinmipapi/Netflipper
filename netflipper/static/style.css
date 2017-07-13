@@ -1,0 +1,16 @@
+h1 {
+    color: red;
+}
+nav {
+  left: 50%;
+  margin-right: -50%;
+}
+
+nav ul {
+  list-style: none;
+  left: 50%;
+  margin-right: -50%;
+}
+nav ul li {
+  display: inline-block;
+}

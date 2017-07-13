@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load channels_extra %}
 {% block content %}
   <form role="form" action="" method="post">
   <h1>{{series.name}}</h1>
@@ -14,7 +14,7 @@
       <td>Title</td>
       <td>Description</td>
       <td>Year</td>
-      <td>Runtime (seconds)</td>
+      <td>Runtime</td>
       <td>
           Add All
           <input name='season_add' type="checkbox" value='add'/>
@@ -26,7 +26,7 @@
         <td>{{episode.name}}</td>
         <td>{{episode.description}}</td>
         <td>{{episode.year}}</td>
-        <td>{{episode.runtime}}</td>
+        <td>{{episode.runtime|sec_to_min}} mins</td>
         <td><input name="checks[]" type="checkbox" value="{{episode.id}}"></input>
       </tr>
     {% endfor %}
