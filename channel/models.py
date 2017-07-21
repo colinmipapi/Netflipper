@@ -58,7 +58,8 @@ class Video(models.Model):
         choices=TYPE)
     season = models.ForeignKey(
         'channel.Season',
-        null=True)
+        null=True,
+        blank=True)
     episodeNum =  models.IntegerField(
         null=True,
         blank=True)

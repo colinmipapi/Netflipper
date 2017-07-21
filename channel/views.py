@@ -81,22 +81,21 @@ def create_series(request):
                 print ("Could not find Netflix ID by ID")
                 return redirect('home')
 
-        ep_json = get_netflix_episodes(show_id)
+        ep_json = get_netflix_episodes(str(show_id))
 
 
         for episode in ep_json:
 
             #[episodeTitle, episodeId, episodeNum, episodeDescription, year, runtime, seasonName, seasonNum, seasonId, seasonDescription]
 
-            try:
                 ep = get_netflix_ep_data(episode)
 
                 episodeTitle = ep[0]
                 episodeId = ep[1]
-                episodeNum = int(ep[2])
+                episodeNum = ep[2]
                 episodeDescription = ep[3]
                 year = ep[8]
-                runtime = int(ep[9])
+                runtime = ep[9]
                 seasonName = ep[4]
                 seasonNum = ep[5]
                 seasonId = ep[6]
@@ -109,6 +108,7 @@ def create_series(request):
 
                     ep_season = Season(series=series, name=seasonName, season_number=seasonNum, netflix_id=seasonId,description=seasonDescription)
                     ep_season.save()
+                    print('season created')
 
                 episode = Video(name=episodeTitle,
                     episodeNum=episodeNum,
@@ -120,7 +120,7 @@ def create_series(request):
                     runtime=runtime)
 
                 episode.save()
-            except:
+
                 print('could not add episode')
 
 
@@ -202,14 +202,15 @@ def create_movie(request):
 
                 show_info = get_all_data(str(value))
                 netflixId = show_info['show_id']
-                movie = Video(name=value, netflix_id=netflixId,media_type="M")
+                movie_info = get_netflix_movie_data(show_id)
+                year = movie_info[0]
+                runtime = movie_info[1]
+                movie = Video(name=title,netflix_id=show_id,media_type="M",description=synopsis,year=year,runtime=runtime)
                 movie.save()
-
-                print(show_info)
 
             except:
 
-                print('could not add movie by id')
+                print('could not add movie by name')
 
             return redirect('home')
 
@@ -217,18 +218,24 @@ def create_movie(request):
         elif search_type == 'movie_id':
 
             try:
+
                 show_info = get_netflix_show_data(str(value))
                 title = show_info[0]
                 show_id = str(value)
                 synopsis = show_info[1]
 
-                movie = Video(name=title,netflix_id=show_id,media_type="M",description=synopsis)
+                movie_info = get_netflix_movie_data(show_id)
+                year = movie_info[0]
+                runtime = movie_info[1]
+
+                movie = Video(name=title,netflix_id=show_id,media_type="M",description=synopsis,year=year,runtime=runtime)
 
                 movie.save()
 
             except:
 
                 print('could not add movie by id')
+
 
             return redirect('home')
 

@@ -18,4 +18,4 @@ class ChannelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Channel
-        fields = ('name','content')
+        fields = ('name','content','user')

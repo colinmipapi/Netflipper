@@ -119,11 +119,8 @@ def get_episode_list(url, season_list):
 def get_netflix_show_data(show_id):
 
     url = "https://www.netflix.com/title/%s" % (show_id)
-
     http = urllib3.PoolManager()
-
     response = http.request('GET', url)
-
     soup = BeautifulSoup(response.data,"html.parser")
 
     title = soup.find('h1',class_="show-title").text
@@ -170,7 +167,7 @@ def get_netflix_episodes(show_id):
 
                     i+= 1
 
-                clean_text = json.dumps(codecs.decode(match_clean2,'unicode_escape'))
+                clean_text = codecs.decode(match_clean2,'unicode_escape')
 
 
                 raw_text_list.append(clean_text)
@@ -200,6 +197,35 @@ def get_netflix_ep_data(json_item):
         runtime = None
 
     return [episodeTitle, episodeId, episodeNum, episodeDescription, seasonName, seasonNum, seasonId, seasonDescription, year, runtime]
+
+def get_netflix_movie_data(show_id):
+
+    url = "https://www.netflix.com/title/%s" % (show_id)
+    http = urllib3.PoolManager()
+    response = http.request('GET', url)
+    soup = BeautifulSoup(response.data,"html.parser")
+
+    year = soup.find('span', class_='year').text
+    runtime = soup.find('span', class_='duration').text
+
+    runtime_total = 0
+
+    regex = r'\w+'
+    list1 = re.findall(regex,runtime)
+
+    for item in list1:
+
+        if 'h' in item:
+
+            item = item.replace('h','')
+            runtime_total += int(item) * 60
+
+        if 'm' in item:
+
+            item = item.replace('m','')
+            runtime_total += int(item)
+    print([year,runtime_total])
+    return [year,runtime_total]
 
 def get_id_from_name(search_term):
     search_results = []

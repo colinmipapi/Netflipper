@@ -6,14 +6,45 @@ nav {
 }
 
 nav ul {
-  list-style: none;
-  margin-left: 5px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #465775;
 }
 nav ul li {
-  margin-left: 5em;
-  margin-right: 5em;
-  display: inline-block;
+   float: left;
+   border-right: 2px solid #bbb;
+   border-color: #EF6F6C;
 }
+
+#nav_bar{
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #EF6F6C;
+}
+
+#body{
+  padding-top: 70px;
+}
+
+.video-info {
+  background-color: #EDE6E3;
+  margin:5px;
+  border-radius: 30px 30px 30px 30px;
+}
+
+.video-info p{
+  margin:50px;
+  padding: 10px;
+  float: left;
+}
+
 
 #season_table{
   width: 75%;
@@ -44,14 +75,15 @@ ol {
   margin-left: 10px;
   margin-right: 10px;
 }
-.series_card{
+.show_list {
+  display: inline-grid;
 
 }
 .index_series_view {
   background-color: #465775;
-  margin-top: 15px;
-  margin-bottom:15px;
-  padding: 30px;
+  margin-top: 5px;
+  margin-bottom:5px;
+  padding: 10px;
   border-radius: 30px 30px 30px 30px;
 }
 .index_series_view h2{

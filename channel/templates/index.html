@@ -17,11 +17,14 @@
   {% endfor %}
   </ol>
   <h2>All Series</h2>
-  <ol >
+  <ol class="show_list">
   {% for series in seriess %}
   <div class="index_series_view">
+    <li id="show_list">
     <h2 class='index_title'>{{ series.name }}</h2>
-    <p>{{series.description}}</p>
+    <div class='video-info'>
+      <p>{{series.description}}</p>
+    </div>
     <ul class="grid_view">
     {% for season in series.season_set.all|dictsort:"season_number" %}
       {% if season.video_set.all %}
@@ -35,6 +38,7 @@
       {% endif %}
     {% endfor %}
   </ul>
+  <li>
   </div>
   {% endfor %}
   </ol>
@@ -48,5 +52,4 @@
       {% include 'forms/create_series.html' %}
     </div>
   </div>
-
 {% endblock content %}
