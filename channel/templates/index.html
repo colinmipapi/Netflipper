@@ -13,7 +13,7 @@
   <h2>All Movies</h2>
   <ol>
   {% for movie in movies %}
-    <li class='index_title'>{{movie.name}}</li>
+    <li class='index_title'>{{movie.name}} <a href="{% url 'view_movie' video_id=movie.id %}">view</a></li>
   {% endfor %}
   </ol>
   <h2>All Series</h2>

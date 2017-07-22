@@ -65,6 +65,8 @@ urlpatterns = [
     url(r'^create_series/$', views.create_series, name='create_series'),
     url(r'^create_movie/$', views.create_movie, name='create_movie'),
     url(r'^create_channel/$', views.create_channel, name='create_channel'),
+    url(r'^view_movie/(?P<video_id>[0-9]+)/$',
+        views.view_movie, name='view_movie'),
     url(r'^view_season/(?P<series_id>[0-9]+)/(?P<season_id>[0-9]+)/$',
         views.view_season, name='view_season'),
     url(r'^view_series/(?P<series_id>[0-9]+)/$',

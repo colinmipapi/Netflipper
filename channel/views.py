@@ -243,6 +243,14 @@ def create_movie(request):
 
     return render(request,'forms/create_movie.html')
 
+def view_movie(request,video_id):
+
+    video = Video.objects.get(pk=video_id)
+
+    return render(request, 'video/view_movie.html',{
+        'video' : video,
+    })
+
 def index(request):
     channels = Channel.objects.all()
     seriess = Series.objects.all().order_by('name')
