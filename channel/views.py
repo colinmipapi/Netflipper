@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from channel.serializers import UserSerializer
+from rest_framework import generics
 
 # Create your views here.
 import simplejson as json
@@ -9,13 +12,25 @@ from channel.models import Channel, Series, Season, Video
 from channel.serializers import VideoSerializer, ChannelSerializer
 from rest_framework import viewsets
 
-class ChannelViewSet(viewsets.ModelViewSet):
+class ChannelList(generics.ListAPIView):
+    queryset = Channel.objects.all()
+    serializer_class = ChannelSerializer
+
+class ChannelDetail(generics.RetrieveAPIView):
     queryset = Channel.objects.all()
     serializer_class = ChannelSerializer
 
 class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 def create_channel(request):
 

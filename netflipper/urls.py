@@ -32,7 +32,6 @@ from django.contrib.auth.views import (
 
 
 router = routers.DefaultRouter()
-router.register(r'channels', views.ChannelViewSet)
 router.register(r'videos', views.VideoViewSet)
 
 
@@ -72,8 +71,12 @@ urlpatterns = [
     url(r'^view_series/(?P<series_id>[0-9]+)/$',
         views.view_series, name='view_series'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^$', views.index, name='home'),
     url(r'^api/', include(router.urls)),
+    url(r'^api/channels/$', views.ChannelList.as_view()),
+    url(r'^api/channels/(?P<pk>[0-9]+)/$', views.ChannelDetail.as_view()),
+    url(r'^api/users/$', views.UserList.as_view()),
+    url(r'^api/users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^$', views.index, name='home'),
 ]
