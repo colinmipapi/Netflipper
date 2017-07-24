@@ -5,7 +5,7 @@
     <h2>Create Channel</h2>
     {% include 'forms/create_channel.html' %}
     <ul>
-    {% for channel in user.channel_set.all %}
+    {% for channel in channels %}
       <li>{{ channel.name }} <a href="{% url 'view_channel' channel_id=channel.id %}">view</a></li>
     {% endfor %}
     </ul>

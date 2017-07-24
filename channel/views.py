@@ -267,7 +267,8 @@ def view_movie(request,video_id):
     })
 
 def index(request):
-    channels = Channel.objects.all()
+
+    channels = Channel.objects.filter(user=request.user)
     seriess = Series.objects.all().order_by('name')
     movies = Video.objects.filter(media_type='M').order_by('name')
     return render(request, 'index.html',{
