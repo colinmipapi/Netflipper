@@ -1,0 +1,21 @@
+!doctype html>
+<html>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" media='all' />
+<head>
+  <title>
+    {% block title %}
+      Netflipper
+    {% endblock title %}
+  </title>
+    {% block header %}{% endblock header %}
+</head>
+<body>
+  <div class="bodyImage">
+    <img width="100%" id="header_image" src="static/channel/images/living_room.jpg">
+    <div class="header_text">
+      <h1>Netflipper</h1>
+      <h3>A different way to watch too much tv</h3>
+    </div>
+  </div>
+</body>
