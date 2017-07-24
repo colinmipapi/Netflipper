@@ -29,8 +29,11 @@ nav ul li {
   color: #EF6F6C;
 }
 
-#body{
-  padding-top: 70px;
+#login_info{
+  float: right;
+  border-left: 2px solid #bbb;
+  border-right: none;
+  border-color: #EF6F6C;
 }
 
 .video-info {

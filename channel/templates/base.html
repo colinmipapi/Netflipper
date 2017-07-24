@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" media='all' />
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -20,15 +20,24 @@
         <li>
           <a id="nav_bar" href = "{% url 'home' %}">Netflipper</a>
         </li>
+        <li>
+          <a id="nav_bar">Browse</a>
+        </li>
         {% if user.is_authenticated %}
         <li>
+          <a id="nav_bar">Channels</a>
+        </li>
+        <li id="login_info">
             <a id="nav_bar" href="{% url 'auth_logout' %}">Logout</a>
         </li>
+        <li id="login_info">
+            <a id="nav_bar" >Settings</a>
+        </li>
         {% else %}
-        <li>
+        <li id="login_info">
             <a id="nav_bar" href="{% url 'auth_login' %}">Login</a>
         </li>
-        <li>
+        <li id="login_info">
             <a id="nav_bar" href="{% url 'registration_register' %}">Register</a>
         </li>
         {% endif %}

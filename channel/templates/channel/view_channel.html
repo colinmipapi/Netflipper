@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Channel</h1>
-<h2>{{ channel.name }}</h2>
+<h1>{{ channel.name }}</h1>
+<h2>Runtime: {{totalRuntime}} | Videos: {{totalVideos}} | TV Shows: {{tv_shows}} | Movies: {{movies}}</h2>
+</br>
 <ol>
 {% for episode in channel.content.all %}
   <li>

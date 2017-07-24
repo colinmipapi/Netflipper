@@ -50,9 +50,19 @@ def create_channel(request):
 def view_channel(request, channel_id):
 
     channel = Channel.objects.get(pk=channel_id)
+    videos = channel.content
+
+    totalRuntime = get_channel_total_runtime(channel_id)
+    totalVideos = videos.count()
+    tv_shows = videos.filter(media_type='T').count()
+    movies = videos.filter(media_type="M").count()
 
     return render(request, 'channel/view_channel.html', {
         'channel' : channel,
+        'totalRuntime' : totalRuntime,
+        'totalVideos' : totalVideos,
+        'tv_shows' : tv_shows,
+        'movies' : movies,
     })
 
 def create_series(request):
@@ -267,8 +277,10 @@ def view_movie(request,video_id):
     })
 
 def index(request):
-
-    channels = Channel.objects.filter(user=request.user)
+    try:
+        channels = Channel.objects.filter(user=request.user)
+    except:
+        channels = None
     seriess = Series.objects.all().order_by('name')
     movies = Video.objects.filter(media_type='M').order_by('name')
     return render(request, 'index.html',{

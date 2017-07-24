@@ -1,55 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% if user.is_authenticated %}
-    <h2>Create Channel</h2>
-    {% include 'forms/create_channel.html' %}
-    <ul>
-    {% for channel in channels %}
-      <li>{{ channel.name }} <a href="{% url 'view_channel' channel_id=channel.id %}">view</a></li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-  <h2>All Movies</h2>
-  <ol>
-  {% for movie in movies %}
-    <li class='index_title'>{{movie.name}} <a href="{% url 'view_movie' video_id=movie.id %}">view</a></li>
-  {% endfor %}
-  </ol>
-  <h2>All Series</h2>
-  <ol class="show_list">
-  {% for series in seriess %}
-  <div class="index_series_view">
-    <li id="show_list">
-    <h2 class='index_title'>{{ series.name }}</h2>
-    <div class='video-info'>
-      <p>{{series.description}}</p>
-    </div>
-    <ul class="grid_view">
-    {% for season in series.season_set.all|dictsort:"season_number" %}
-      {% if season.video_set.all %}
-      <li>
-        <a href="{% url 'view_season' series_id=series.id season_id=season.id %}">
-          <button type="button" class="btn btn-primary btn-lg">
-            {{season.name}}
-          </button>
-        </a>
-      </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-  <li>
-  </div>
-  {% endfor %}
-  </ol>
-  <div class="add-content-forms">
-    <div>
-      <h2>Add Movie</h2>
-      {% include 'forms/create_movie.html' %}
-    </div>
-    <div>
-      <h2>Add Series</h2>
-      {% include 'forms/create_series.html' %}
+  <div class="bodyImage">
+    <img width="100%" id="header_image" src="static/channel/images/living_room.jpg">
+    <div class="header_text">
+      <h1>Netflipper</h1>
+      <h3>A different way to watch too much tv</h3>
     </div>
   </div>
 {% endblock content %}

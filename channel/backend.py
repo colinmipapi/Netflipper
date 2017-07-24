@@ -22,100 +22,6 @@ def get_all_data(show_title, year=0):
     else:
         return 'Unable to locate data'
 
-def find_wiki_url(title):
-
-    query_text = 'List of %s episodes' % (title)
-
-    query = wikipedia.search(query_text)
-
-    print(query)
-
-    for i in query:
-
-        if i == query_text:
-
-            page_title = i
-
-            print(page_title)
-
-            try:
-
-                page = wikipedia.page(page_title)
-
-                page_url = page.url
-
-                print(page_url)
-
-                return page_url
-
-            except:
-
-                print("can't find page url")
-
-        else:
-
-            return None
-
-def get_season_list(url):
-
-    span_list = []
-
-    http = urllib3.PoolManager()
-
-    response = http.request('GET', url)
-
-    soup = BeautifulSoup(response.data)
-
-    page_h3s = soup.find_all('h3')
-
-    i = 0
-
-    for item in page_h3s:
-
-        span_info = str(item.span)
-
-        if "Season" in span_info:
-
-            i = i + 1
-
-            season_number = i
-
-            season_id = item.span.get('id')
-
-            span_list.append([season_number,season_id])
-
-    return span_list
-
-def get_episode_list(url, season_list):
-
-    episode_list = []
-
-    http = urllib3.PoolManager()
-
-    response = http.request('GET', url)
-
-    soup = BeautifulSoup(response.data)
-
-    for season in season_list:
-        season_id = str(season[1])
-        season_span = soup.find(id=season_id)
-
-        season_num = season[0]
-
-        season_table = season_span.find_next('table')
-
-        episodes = season_table.find_all('tr')
-
-        for episode in episodes[1:]:
-
-                series_episode_number = episode.find_next("th").get_text()
-                season_episode_number = episode.find_next("td")
-                episode_name = season_episode_number.find_next("td").get_text()
-
-                episode_list.append([season_num, series_episode_number, episode_name])
-
-    return episode_list
-
 def get_netflix_show_data(show_id):
 
     url = "https://www.netflix.com/title/%s" % (show_id)
@@ -246,3 +152,133 @@ def get_id_from_name(search_term):
         except:
 
             print('could not find data-href')
+
+def get_channel_total_runtime(channel_id):
+
+    channel = Channel.objects.get(pk=channel_id)
+
+    videos = channel.content.all()
+
+    total_runtime = 0
+    result_string = ''
+
+    for video in videos:
+
+        runtime = video.runtime
+
+        total_runtime = total_runtime + runtime
+
+    hours = total_runtime // 3600
+    minutes = total_runtime % 60
+
+    if hours != 0:
+
+        hr = '%i Hr' % (hours)
+
+        result_string = hr
+
+    if minutes != 0:
+
+        mins = '%i Mins' % (minutes)
+
+        result_string = result_string + ' ' + mins 
+
+    return result_string
+
+'''
+def find_wiki_url(title):
+
+    query_text = 'List of %s episodes' % (title)
+
+    query = wikipedia.search(query_text)
+
+    print(query)
+
+    for i in query:
+
+        if i == query_text:
+
+            page_title = i
+
+            print(page_title)
+
+            try:
+
+                page = wikipedia.page(page_title)
+
+                page_url = page.url
+
+                print(page_url)
+
+                return page_url
+
+            except:
+
+                print("can't find page url")
+
+        else:
+
+            return None
+'''
+'''
+def get_season_list(url):
+
+    span_list = []
+
+    http = urllib3.PoolManager()
+
+    response = http.request('GET', url)
+
+    soup = BeautifulSoup(response.data)
+
+    page_h3s = soup.find_all('h3')
+
+    i = 0
+
+    for item in page_h3s:
+
+        span_info = str(item.span)
+
+        if "Season" in span_info:
+
+            i = i + 1
+
+            season_number = i
+
+            season_id = item.span.get('id')
+
+            span_list.append([season_number,season_id])
+
+    return span_list
+'''
+'''
+def get_episode_list(url, season_list):
+
+    episode_list = []
+
+    http = urllib3.PoolManager()
+
+    response = http.request('GET', url)
+
+    soup = BeautifulSoup(response.data)
+
+    for season in season_list:
+        season_id = str(season[1])
+        season_span = soup.find(id=season_id)
+
+        season_num = season[0]
+
+        season_table = season_span.find_next('table')
+
+        episodes = season_table.find_all('tr')
+
+        for episode in episodes[1:]:
+
+                series_episode_number = episode.find_next("th").get_text()
+                season_episode_number = episode.find_next("td")
+                episode_name = season_episode_number.find_next("td").get_text()
+
+                episode_list.append([season_num, series_episode_number, episode_name])
+
+    return episode_list
+'''
