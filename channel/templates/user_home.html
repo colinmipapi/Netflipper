@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>My Channels</h1>
+  <div>
+  {% for channel in channels %}
+    <div>
+      <h3>{{ channel.name }}</h3>
+      {% for episode in channel.content.all|slice:":5" %}
+        <h4>{{ episode.name }}</h4>
+      {% endfor %}
+    <div>
+  {% endfor %}
+{% endblock content %}

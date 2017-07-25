@@ -47,6 +47,7 @@ def create_channel(request):
 
     return render(request, 'forms/create_channel.html')
 
+
 def view_channel(request, channel_id):
 
     channel = Channel.objects.get(pk=channel_id)
@@ -268,6 +269,14 @@ def create_movie(request):
 
     return render(request,'forms/create_movie.html')
 
+def user_home(request):
+
+    channels = Channel.objects.all().filter(user=request.user).order_by('id')[:5]
+
+    return render(request, 'user_home.html',{
+        'channels' : channels,
+    })
+
 def view_movie(request,video_id):
 
     video = Video.objects.get(pk=video_id)
@@ -276,15 +285,19 @@ def view_movie(request,video_id):
         'video' : video,
     })
 
-def index(request):
+def browse(request):
     try:
         channels = Channel.objects.filter(user=request.user)
     except:
         channels = None
     seriess = Series.objects.all().order_by('name')
     movies = Video.objects.filter(media_type='M').order_by('name')
-    return render(request, 'index.html',{
+    return render(request, 'browse.html',{
         'channels' : channels,
         'seriess' : seriess,
         'movies' : movies,
     })
+
+def index(request):
+
+    return render(request,'index.html')

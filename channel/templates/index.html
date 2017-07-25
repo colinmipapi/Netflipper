@@ -1,11 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="bodyImage">
+
+  <div id="bodyImage">
     <img width="100%" id="header_image" src="static/channel/images/living_room.jpg">
-    <div class="header_text">
-      <h1>Netflipper</h1>
-      <h3>A different way to watch too much tv</h3>
+    <h1 align="center">Netflipper</h1>
+    <h3>A different way to watch too much tv</h3>
+    <div align-items="center" id="homeBtns">
+      <li>
+        <a href="{% url 'browse' %}">
+          <button type="button">
+            Browse
+          </button>
+        </a>
+      </li>
+      <li>
+        {% if user.is_authenticated %}
+          <a href="{% url 'user_home' %}">
+            <button type="button">
+              Channel
+            </button>
+          </a>
+        {% else %}
+          <a href="{% url 'registration_register' %}">
+            <button type="button">
+              Sign Up
+            </button>
+          </a>
+        {% endif %}
+      </li>
     </div>
   </div>
 {% endblock content %}

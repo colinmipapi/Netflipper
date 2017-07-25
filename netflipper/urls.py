@@ -70,6 +70,8 @@ urlpatterns = [
         views.view_season, name='view_season'),
     url(r'^view_series/(?P<series_id>[0-9]+)/$',
         views.view_series, name='view_series'),
+    url(r'^user_home', views.user_home, name='user_home'),
+    url(r'^browse/', views.browse, name='browse'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^api/', include(router.urls)),
     url(r'^api/channels/$', views.ChannelList.as_view()),
