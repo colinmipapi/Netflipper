@@ -24,22 +24,22 @@
           <a id="nav_bar" href="{% url 'browse' %}">Browse</a>
         </li>
         {% if user.is_authenticated %}
-        <li>
-          <a id="nav_bar" href="{% url 'user_home' %}">Channels</a>
-        </li>
-        <li id="login_info">
-            <a id="nav_bar" href="{% url 'auth_logout' %}">Logout</a>
-        </li>
-        <li id="login_info">
-            <a id="nav_bar" >Settings</a>
-        </li>
+          <li>
+            <a id="nav_bar" href="{% url 'user_home' %}">Channels</a>
+          </li>
+          <li id="login_info">
+              <a id="nav_bar" href="{% url 'auth_logout' %}">Logout</a>
+          </li>
+          <li id="login_info">
+              <a id="nav_bar" >Settings</a>
+          </li>
         {% else %}
-        <li id="login_info">
-            <a id="nav_bar" href="{% url 'auth_login' %}">Login</a>
-        </li>
-        <li id="login_info">
-            <a id="nav_bar" href="{% url 'registration_register' %}">Register</a>
-        </li>
+          <li id="login_info">
+              <a id="nav_bar" href="{% url 'registration_register' %}">Register</a>
+          </li>
+          <li id="login_info">
+              <a id="nav_bar" href="{% url 'auth_login' %}">Login</a>
+          </li>
         {% endif %}
       </ul>
     </nav>

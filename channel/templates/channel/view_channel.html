@@ -6,12 +6,16 @@
 </br>
 <ol>
 {% for episode in channel.content.all %}
+<div id="channel_episode">
   <li>
     {{ episode.name }} </br>
     {{ episode.season.series.name }} |
     {{ episode.season.name }}
   </li>
+</div>
   </br>
 {% endfor %}
 </ol>
+<h2>Create Channel</h2>
+{% include 'forms/create_channel.html' %}
 {% endblock content %}

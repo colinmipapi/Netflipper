@@ -43,6 +43,17 @@ nav ul li {
   z-index: -1;
 }
 
+#channel_episode{
+  background-color: #EDE6E3;
+  margin:5px;
+  border-radius: 30px 30px 30px 30px;
+}
+
+#channel_episode li{
+  list-style: none;
+  display: inline-grid;
+}
+
 #bodyImage h1 {
   top:10px;
   left: 100px;
